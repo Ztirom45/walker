@@ -52,15 +52,38 @@ void wait_for_wifi_connection(){
   Serial.println("connected to WiFi");
 }
 
+double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor){
+  //trigger
+  pinMode(trig_pin, OUTPUT);
+  digitalWrite(trig_pin,LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig_pin,HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig_pin,LOW);
+
+  //read
+  pinMode(echo_pin,INPUT);
+  return (double)pulseIn(echo_pin,HIGH) *conversion_factor;
+}
+
+#define read_ultrasonic1() ultrasonic_cm(28,30,0.034 / 2.0)
+#define read_ultrasonic2() ultrasonic_cm(29,39,0.034 / 2.0)
+
+
 void setup(){	
 	Serial.begin(9600);
 	Serial.println("Start");
-	Serial3.begin(115200);
+	//setup sensors
+
+	//setup motors
 	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
 	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
 	Encoder_1.setTarPWM(0);
 	Encoder_2.setTarPWM(0);
-	wait_for_wifi_connection();
+
+	//setup wifimod
+	Serial3.begin(115200);
+	/*wait_for_wifi_connection();*/
 }
 
 //do not write "data:" as topic or "/////" as message or topic
@@ -157,15 +180,28 @@ void parse_and_execute_action(String action){
       return;
     } 
 }
+
+
+#define STEARING_FAKTOR 1
+void follow_wall(){
+	float us_div = read_ultrasonic1()-read_ultrasonic2();
+	Serial.println(us_div*STEARING_FAKTOR);
+	Encoder_1.setTarPWM(50+us_div*STEARING_FAKTOR);
+	Encoder_2.setTarPWM(50+us_div*STEARING_FAKTOR);
+	
+}
+
+
 void loop(){
 	Encoder_1.loop();
 	Encoder_2.loop();
-	//Serial.println("loop");
-  	
-	/*
+  	follow_wall();
+
+	/*//debuging stuff
 	if(Serial3.available()>0){
 	  Serial.print((char)Serial3.read());
 	}*/
-	parse_and_execute_action(read_message());
+	
+	//parse_and_execute_action(read_message());
 
 }
