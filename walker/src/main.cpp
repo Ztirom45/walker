@@ -83,8 +83,29 @@ void setup(){
 
 	//setup wifimod
 	Serial3.begin(115200);
-	/*wait_for_wifi_connection();*/
+	wait_for_wifi_connection();
 }
+
+//sensor stuff
+#define STEARING_FAKTOR 1
+void follow_wall(){
+	float u1 = read_ultrasonic1();
+	float u2 = read_ultrasonic2();
+	float us_div = u1-u2;
+	Serial.print(" 1:");
+	Serial.print(u1);
+	Serial.print(" 2:");
+	Serial.print(u2);
+	Serial.print(" div:");
+	Serial.println(us_div*STEARING_FAKTOR);
+	Encoder_1.setTarPWM(-100-us_div*STEARING_FAKTOR);
+	Encoder_2.setTarPWM(100+us_div*STEARING_FAKTOR);
+	Encoder_1.loop();
+	Encoder_2.loop();
+	
+}
+
+
 
 //do not write "data:" as topic or "/////" as message or topic
 String read_message(){
@@ -179,29 +200,32 @@ void parse_and_execute_action(String action){
       Serial.println(args[0]);
       return;
     } 
-}
+    if(command == "follow_wall"){
+      if(args.size() != 0){
+	Serial.print("error turn(speed) requires 0 argument, but ");
+	Serial.print(args.size());
+	Serial.println(" were given");
+	return;
+      } 
+      Serial.println("following wall");
+      while(true){
+	follow_wall();
+      }
+      return;
+    }   
 
-
-#define STEARING_FAKTOR 1
-void follow_wall(){
-	float us_div = read_ultrasonic1()-read_ultrasonic2();
-	Serial.println(us_div*STEARING_FAKTOR);
-	Encoder_1.setTarPWM(50+us_div*STEARING_FAKTOR);
-	Encoder_2.setTarPWM(50+us_div*STEARING_FAKTOR);
-	
 }
 
 
 void loop(){
 	Encoder_1.loop();
 	Encoder_2.loop();
-  	follow_wall();
 
 	/*//debuging stuff
 	if(Serial3.available()>0){
 	  Serial.print((char)Serial3.read());
 	}*/
 	
-	//parse_and_execute_action(read_message());
+	parse_and_execute_action(read_message());
 
 }

@@ -45,9 +45,11 @@ data:<message>
 - [ ] turn(speed, degree) ⟲ requires Gyro
 - [ ] turn(speed) ⟲ +==right -==left
 - [X] stop()
+- [X] follow_wall()
 
 ### TODO:
 - [ ] Gyro
 - [ ] controller app
 - [ ] maybe camera
 - [ ] fix motor acceleration problem
+- [ ] real support for commands which are looped (like follow_wall)
