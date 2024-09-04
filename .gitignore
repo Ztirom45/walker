@@ -1,0 +1,5 @@
+wifimod/.pio
+wifimod/.cache
+walker/.pio
+walker/.cache
+wifimod/src/password.h
