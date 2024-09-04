@@ -1,4 +1,5 @@
 # Walker
+<img src="https://github.com/Ztirom45/walker/blob/main/img/walker.png"/>
 
 ### install
 ```
