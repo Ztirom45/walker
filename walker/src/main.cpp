@@ -96,9 +96,17 @@ void setup(){
 	//setup motors
 	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
 	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
-	Encoder_1.setTarPWM(0);
-	Encoder_2.setTarPWM(0);
-
+	//setup for encoder, wich wont work anyways
+	//use with: runSpeed
+	Encoder_1.setPulse(8);
+	Encoder_1.setRatio(46.67);
+	Encoder_1.setPosPid(1.8,0,1.2);
+	Encoder_1.setSpeedPid(0.18,0,0);
+	
+	Encoder_2.setPulse(8);
+	Encoder_2.setRatio(46.67);
+	Encoder_2.setPosPid(1.8,0,1.2);
+	Encoder_2.setSpeedPid(0.18,0,0);
 	//setup wifimod
 	//Serial3.begin(115200);
 	//wait_for_wifi_connection();
@@ -273,10 +281,12 @@ void leg2_move(int speed,int direction){
 
 }
 
-void walk(){
-	leg1_move(-50,1);
-	leg1_move(-50,-1);
-	
+void walk(){//the motor spin in diffren speeds, so the program needs to compansate this
+	leg1_move(-70,1);
+	leg1_move(-70,-1);
+	leg2_move(60, 1);
+	leg2_move(60, -1);
+
 }
 
 void loop(){
@@ -287,5 +297,8 @@ void loop(){
 	if(Serial3.available()>0){
 	  Serial.print((char)Serial3.read());
 	}*/
+	//Encoder_2.setTarPWM(50.0);
+	//Encoder_1.setTarPWM(-55.0);
+	
 	walk();
 }
