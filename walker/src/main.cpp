@@ -57,6 +57,7 @@ double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor){
 #define read_ultrasonic2() ultrasonic_cm(29,39,0.034 / 2.0)
 /* Assign a unique ID to this sensor at the same time */
 Adafruit_ADXL345_Unified acc = Adafruit_ADXL345_Unified(12345);
+Adafruit_ADXL345_Unified acc2 = Adafruit_ADXL345_Unified(12344);
 
 
 void wait_for_wifi_connection(){
@@ -79,13 +80,19 @@ void setup(){
 	Serial.begin(9600);
 	Serial.println("Start");
 	//setup sensors
-	if(!acc.begin())
+	if(!acc.begin(0x53))
 	{
-	  Serial.println("no ADXL345 detected ... Check your wiring!");
+	  Serial.println("no ADXL345 on53d detected ... Check your wiring!");
 	  while(1);
 	}
-
+	if(!acc2.begin(0x1d))
+	{
+	  Serial.println("no ADXL345 on 0x1d detected ... Check your wiring!");
+	  while(1);
+	}
 	acc.setRange(ADXL345_RANGE_16_G);
+	acc2.setRange(ADXL345_RANGE_16_G);
+	
 	//setup motors
 	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
 	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
@@ -93,8 +100,8 @@ void setup(){
 	Encoder_2.setTarPWM(0);
 
 	//setup wifimod
-	Serial3.begin(115200);
-	wait_for_wifi_connection();
+	//Serial3.begin(115200);
+	//wait_for_wifi_connection();
 }
 
 //wall follower
@@ -227,6 +234,50 @@ void parse_and_execute_action(String action){
 
 }
 
+void leg1_move(int speed,int direction){	
+	sensors_event_t event;
+	
+	Encoder_1.setTarPWM(speed);
+	while(direction*event.gyro.y>0||event.gyro.y==0){	
+	  acc2.getEvent(&event);
+	  Serial.print("A_x: "); Serial.print(event.gyro.x); Serial.print(", ");
+	  Serial.print("B_y: "); Serial.print(event.gyro.y); Serial.print(", ");
+	  Serial.print("C_z: "); Serial.print(event.gyro.z); Serial.println(" ");
+	  
+	  Encoder_1.loop();
+	}
+	Encoder_1.setTarPWM(0);
+	for(int i=0;i<10;i++){
+	  Encoder_1.loop();
+	  delay(100);
+	}
+
+}
+void leg2_move(int speed,int direction){	
+	sensors_event_t event;
+	
+	Encoder_2.setTarPWM(speed);
+	while(direction*event.gyro.y>0||event.gyro.y==0){	
+	  acc.getEvent(&event);
+	  Serial.print("A_x: "); Serial.print(event.gyro.x); Serial.print(", ");
+	  Serial.print("B_y: "); Serial.print(event.gyro.y); Serial.print(", ");
+	  Serial.print("C_z: "); Serial.print(event.gyro.z); Serial.println(" ");
+	  
+	  Encoder_2.loop();
+	}
+	Encoder_2.setTarPWM(0);
+	for(int i=0;i<10;i++){
+	  Encoder_2.loop();
+	  delay(100);
+	}
+
+}
+
+void walk(){
+	leg1_move(-50,1);
+	leg1_move(-50,-1);
+	
+}
 
 void loop(){
 	Encoder_1.loop();
@@ -236,13 +287,5 @@ void loop(){
 	if(Serial3.available()>0){
 	  Serial.print((char)Serial3.read());
 	}*/
-	
-	sensors_event_t event; 
-	acc.getEvent(&event);
-	Serial.print("a_x: "); Serial.print(event.gyro.x); Serial.print(" ");
-	Serial.print("a_y: "); Serial.print(event.gyro.y); Serial.print(" ");
-	Serial.print("a_z: "); Serial.print(event.gyro.z); Serial.println(" ");
-	Encoder_2.setTarPWM(100);
-	//parse_and_execute_action(read_message());
-
+	walk();
 }
