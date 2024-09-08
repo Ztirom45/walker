@@ -13,8 +13,11 @@ written by Ztirom45
 #include <MeEncoderNew.h>
 #include <Arduino.h>
 #include <MeMegaPi.h>
+#include <Adafruit_ADXL345_U.h>
+
 #include <Vector.h>
 
+//motors
 MeEncoderOnBoard Encoder_1(SLOT1);
 MeEncoderOnBoard Encoder_2(SLOT2);
 MeEncoderOnBoard Encoder_3(SLOT3);
@@ -35,23 +38,7 @@ void isr_process_encoder2(void){
   }
 }
 
-void wait_for_wifi_connection(){
-  char recived = '7';
-  bool loop = true;
-  while(loop){
-    loop = false;
-    for(int i=0;i<30;i++){
-      recived = Serial3.read();
-      Serial.println(recived);
-      if (recived=='7'||recived=='4'){
-	loop = true;
-      }
-      delay(100);
-    }
-  }
-  Serial.println("connected to WiFi");
-}
-
+//sensors
 double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor){
   //trigger
   pinMode(trig_pin, OUTPUT);
@@ -68,13 +55,37 @@ double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor){
 
 #define read_ultrasonic1() ultrasonic_cm(28,30,0.034 / 2.0)
 #define read_ultrasonic2() ultrasonic_cm(29,39,0.034 / 2.0)
+/* Assign a unique ID to this sensor at the same time */
+Adafruit_ADXL345_Unified acc = Adafruit_ADXL345_Unified(12345);
 
 
+void wait_for_wifi_connection(){
+  char recived = '7';
+  bool loop = true;
+  while(loop){
+    loop = false;
+    for(int i=0;i<30;i++){
+      recived = Serial3.read();
+      Serial.println(recived);
+      if (recived=='7'||recived=='4'){
+	loop = true;
+      }
+      delay(100);
+    }
+  }
+  Serial.println("connected to WiFi");
+}
 void setup(){	
 	Serial.begin(9600);
 	Serial.println("Start");
 	//setup sensors
+	if(!acc.begin())
+	{
+	  Serial.println("no ADXL345 detected ... Check your wiring!");
+	  while(1);
+	}
 
+	acc.setRange(ADXL345_RANGE_16_G);
 	//setup motors
 	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
 	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
@@ -86,7 +97,7 @@ void setup(){
 	wait_for_wifi_connection();
 }
 
-//sensor stuff
+//wall follower
 #define STEARING_FAKTOR 1
 void follow_wall(){
 	float u1 = read_ultrasonic1();
@@ -226,6 +237,12 @@ void loop(){
 	  Serial.print((char)Serial3.read());
 	}*/
 	
-	parse_and_execute_action(read_message());
+	sensors_event_t event; 
+	acc.getEvent(&event);
+	Serial.print("a_x: "); Serial.print(event.gyro.x); Serial.print(" ");
+	Serial.print("a_y: "); Serial.print(event.gyro.y); Serial.print(" ");
+	Serial.print("a_z: "); Serial.print(event.gyro.z); Serial.println(" ");
+	Encoder_2.setTarPWM(100);
+	//parse_and_execute_action(read_message());
 
 }

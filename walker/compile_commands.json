@@ -462,7 +462,37 @@
         "output": ".pio/build/megaatmega2560/libf63/Vector/Vector/Vector.cpp.o"
     },
     {
-        "command": "/home/moritz/.platformio/packages/toolchain-atmelavr/bin/avr-g++ -o .pio/build/megaatmega2560/src/main.cpp.o -c -fno-exceptions -fno-threadsafe-statics -fpermissive -std=gnu++11 -mmcu=atmega2560 -Os -Wall -ffunction-sections -fdata-sections -flto -DPLATFORMIO=60114 -DARDUINO_AVR_MEGA2560 -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 -Iinclude -Isrc -I.pio/libdeps/megaatmega2560/Vector/src -I/home/moritz/.platformio/packages/framework-arduino-avr/libraries/Wire/src -I/home/moritz/.platformio/packages/framework-arduino-avr/libraries/SPI/src -I.pio/libdeps/megaatmega2560/MakeBlockDrive/src -I/home/moritz/.platformio/packages/framework-arduino-avr/cores/arduino -I/home/moritz/.platformio/packages/framework-arduino-avr/variants/mega src/main.cpp",
+        "command": "/home/moritz/.platformio/packages/toolchain-atmelavr/bin/avr-g++ -o \".pio/build/megaatmega2560/lib47f/Adafruit BusIO/Adafruit_BusIO_Register.cpp.o\" -c -fno-exceptions -fno-threadsafe-statics -fpermissive -std=gnu++11 -mmcu=atmega2560 -Os -Wall -ffunction-sections -fdata-sections -flto -DPLATFORMIO=60114 -DARDUINO_AVR_MEGA2560 -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 \"-I.pio/libdeps/megaatmega2560/Adafruit BusIO\" -I/home/moritz/.platformio/packages/framework-arduino-avr/libraries/SPI/src -I/home/moritz/.platformio/packages/framework-arduino-avr/libraries/Wire/src -I/home/moritz/.platformio/packages/framework-arduino-avr/cores/arduino -I/home/moritz/.platformio/packages/framework-arduino-avr/variants/mega \".pio/libdeps/megaatmega2560/Adafruit BusIO/Adafruit_BusIO_Register.cpp\"",
+        "directory": "/home/moritz/dev/Arduino/walker/walker",
+        "file": ".pio/libdeps/megaatmega2560/Adafruit BusIO/Adafruit_BusIO_Register.cpp",
+        "output": ".pio/build/megaatmega2560/lib47f/Adafruit BusIO/Adafruit_BusIO_Register.cpp.o"
+    },
+    {
+        "command": "/home/moritz/.platformio/packages/toolchain-atmelavr/bin/avr-g++ -o \".pio/build/megaatmega2560/lib47f/Adafruit BusIO/Adafruit_I2CDevice.cpp.o\" -c -fno-exceptions -fno-threadsafe-statics -fpermissive -std=gnu++11 -mmcu=atmega2560 -Os -Wall -ffunction-sections -fdata-sections -flto -DPLATFORMIO=60114 -DARDUINO_AVR_MEGA2560 -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 \"-I.pio/libdeps/megaatmega2560/Adafruit BusIO\" -I/home/moritz/.platformio/packages/framework-arduino-avr/libraries/SPI/src -I/home/moritz/.platformio/packages/framework-arduino-avr/libraries/Wire/src -I/home/moritz/.platformio/packages/framework-arduino-avr/cores/arduino -I/home/moritz/.platformio/packages/framework-arduino-avr/variants/mega \".pio/libdeps/megaatmega2560/Adafruit BusIO/Adafruit_I2CDevice.cpp\"",
+        "directory": "/home/moritz/dev/Arduino/walker/walker",
+        "file": ".pio/libdeps/megaatmega2560/Adafruit BusIO/Adafruit_I2CDevice.cpp",
+        "output": ".pio/build/megaatmega2560/lib47f/Adafruit BusIO/Adafruit_I2CDevice.cpp.o"
+    },
+    {
+        "command": "/home/moritz/.platformio/packages/toolchain-atmelavr/bin/avr-g++ -o \".pio/build/megaatmega2560/lib47f/Adafruit BusIO/Adafruit_SPIDevice.cpp.o\" -c -fno-exceptions -fno-threadsafe-statics -fpermissive -std=gnu++11 -mmcu=atmega2560 -Os -Wall -ffunction-sections -fdata-sections -flto -DPLATFORMIO=60114 -DARDUINO_AVR_MEGA2560 -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 \"-I.pio/libdeps/megaatmega2560/Adafruit BusIO\" -I/home/moritz/.platformio/packages/framework-arduino-avr/libraries/SPI/src -I/home/moritz/.platformio/packages/framework-arduino-avr/libraries/Wire/src -I/home/moritz/.platformio/packages/framework-arduino-avr/cores/arduino -I/home/moritz/.platformio/packages/framework-arduino-avr/variants/mega \".pio/libdeps/megaatmega2560/Adafruit BusIO/Adafruit_SPIDevice.cpp\"",
+        "directory": "/home/moritz/dev/Arduino/walker/walker",
+        "file": ".pio/libdeps/megaatmega2560/Adafruit BusIO/Adafruit_SPIDevice.cpp",
+        "output": ".pio/build/megaatmega2560/lib47f/Adafruit BusIO/Adafruit_SPIDevice.cpp.o"
+    },
+    {
+        "command": "/home/moritz/.platformio/packages/toolchain-atmelavr/bin/avr-g++ -o \".pio/build/megaatmega2560/lib72c/Adafruit Unified Sensor/Adafruit_Sensor.cpp.o\" -c -fno-exceptions -fno-threadsafe-statics -fpermissive -std=gnu++11 -mmcu=atmega2560 -Os -Wall -ffunction-sections -fdata-sections -flto -DPLATFORMIO=60114 -DARDUINO_AVR_MEGA2560 -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 \"-I.pio/libdeps/megaatmega2560/Adafruit Unified Sensor\" -I/home/moritz/.platformio/packages/framework-arduino-avr/cores/arduino -I/home/moritz/.platformio/packages/framework-arduino-avr/variants/mega \".pio/libdeps/megaatmega2560/Adafruit Unified Sensor/Adafruit_Sensor.cpp\"",
+        "directory": "/home/moritz/dev/Arduino/walker/walker",
+        "file": ".pio/libdeps/megaatmega2560/Adafruit Unified Sensor/Adafruit_Sensor.cpp",
+        "output": ".pio/build/megaatmega2560/lib72c/Adafruit Unified Sensor/Adafruit_Sensor.cpp.o"
+    },
+    {
+        "command": "/home/moritz/.platformio/packages/toolchain-atmelavr/bin/avr-g++ -o \".pio/build/megaatmega2560/lib0e3/Adafruit ADXL345/Adafruit_ADXL345_U.cpp.o\" -c -fno-exceptions -fno-threadsafe-statics -fpermissive -std=gnu++11 -mmcu=atmega2560 -Os -Wall -ffunction-sections -fdata-sections -flto -DPLATFORMIO=60114 -DARDUINO_AVR_MEGA2560 -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 \"-I.pio/libdeps/megaatmega2560/Adafruit ADXL345\" \"-I.pio/libdeps/megaatmega2560/Adafruit Unified Sensor\" \"-I.pio/libdeps/megaatmega2560/Adafruit BusIO\" -I/home/moritz/.platformio/packages/framework-arduino-avr/libraries/SPI/src -I/home/moritz/.platformio/packages/framework-arduino-avr/libraries/Wire/src -I/home/moritz/.platformio/packages/framework-arduino-avr/cores/arduino -I/home/moritz/.platformio/packages/framework-arduino-avr/variants/mega \".pio/libdeps/megaatmega2560/Adafruit ADXL345/Adafruit_ADXL345_U.cpp\"",
+        "directory": "/home/moritz/dev/Arduino/walker/walker",
+        "file": ".pio/libdeps/megaatmega2560/Adafruit ADXL345/Adafruit_ADXL345_U.cpp",
+        "output": ".pio/build/megaatmega2560/lib0e3/Adafruit ADXL345/Adafruit_ADXL345_U.cpp.o"
+    },
+    {
+        "command": "/home/moritz/.platformio/packages/toolchain-atmelavr/bin/avr-g++ -o .pio/build/megaatmega2560/src/main.cpp.o -c -fno-exceptions -fno-threadsafe-statics -fpermissive -std=gnu++11 -mmcu=atmega2560 -Os -Wall -ffunction-sections -fdata-sections -flto -DPLATFORMIO=60114 -DARDUINO_AVR_MEGA2560 -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 -Iinclude -Isrc \"-I.pio/libdeps/megaatmega2560/Adafruit ADXL345\" \"-I.pio/libdeps/megaatmega2560/Adafruit Unified Sensor\" \"-I.pio/libdeps/megaatmega2560/Adafruit BusIO\" -I.pio/libdeps/megaatmega2560/Vector/src -I/home/moritz/.platformio/packages/framework-arduino-avr/libraries/Wire/src -I/home/moritz/.platformio/packages/framework-arduino-avr/libraries/SPI/src -I.pio/libdeps/megaatmega2560/MakeBlockDrive/src -I/home/moritz/.platformio/packages/framework-arduino-avr/cores/arduino -I/home/moritz/.platformio/packages/framework-arduino-avr/variants/mega src/main.cpp",
         "directory": "/home/moritz/dev/Arduino/walker/walker",
         "file": "src/main.cpp",
         "output": ".pio/build/megaatmega2560/src/main.cpp.o"
