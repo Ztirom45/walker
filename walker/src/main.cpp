@@ -6,17 +6,11 @@ there are No Competible Motor Driver Pins or general PWM pins to power the Motor
 LICENCE: GPL4
 written by Ztirom45
 */
-
-#define MAX_COMMAND_LEN 50
-
-#include <HardwareSerial.h>
-#include <MeEncoderNew.h>
-#include <Arduino.h>
 #include <MeMegaPi.h>
-#include <Adafruit_ADXL345_U.h>
 
-#include <Vector.h>
 
+
+#include <commands.hpp>
 //motors
 MeEncoderOnBoard Encoder_1(SLOT1);
 MeEncoderOnBoard Encoder_2(SLOT2);
@@ -110,6 +104,9 @@ void setup(){
 	//setup wifimod
 	//Serial3.begin(115200);
 	//wait_for_wifi_connection();
+	
+	//setup command engine
+	init_commands();
 }
 
 //wall follower
@@ -179,7 +176,7 @@ void parse_and_execute_action(String action){
     }
     if(command == "stop"){
       if(args.size() != 0){
-	Serial.print("error forward(speed) requires 0 argument, but ");
+	Serial.print("error stop() requires 0 argument, but ");
 	Serial.print(args.size());
 	Serial.println(" were given");
 	return;
@@ -228,7 +225,7 @@ void parse_and_execute_action(String action){
     } 
     if(command == "follow_wall"){
       if(args.size() != 0){
-	Serial.print("error turn(speed) requires 0 argument, but ");
+	Serial.print("error follow_wall() requires 0 argument, but ");
 	Serial.print(args.size());
 	Serial.println(" were given");
 	return;
@@ -252,13 +249,11 @@ void leg1_move(int speed,int direction){
 	  Serial.print("B_y: "); Serial.print(event.gyro.y); Serial.print(", ");
 	  Serial.print("C_z: "); Serial.print(event.gyro.z); Serial.println(" ");
 	  
+	  Encoder_2.loop();
 	  Encoder_1.loop();
 	}
 	Encoder_1.setTarPWM(0);
-	for(int i=0;i<10;i++){
-	  Encoder_1.loop();
-	  delay(100);
-	}
+
 
 }
 void leg2_move(int speed,int direction){	
@@ -271,21 +266,18 @@ void leg2_move(int speed,int direction){
 	  Serial.print("B_y: "); Serial.print(event.gyro.y); Serial.print(", ");
 	  Serial.print("C_z: "); Serial.print(event.gyro.z); Serial.println(" ");
 	  
+	  Encoder_1.loop();
 	  Encoder_2.loop();
 	}
 	Encoder_2.setTarPWM(0);
-	for(int i=0;i<10;i++){
-	  Encoder_2.loop();
-	  delay(100);
-	}
 
 }
 
-void walk(){//the motor spin in diffren speeds, so the program needs to compansate this
-	leg1_move(-70,1);
-	leg1_move(-70,-1);
-	leg2_move(60, 1);
-	leg2_move(60, -1);
+void walk(){//the motors spin in diffrent speeds, so the program needs to compansate this
+	leg1_move(-80,1);
+	leg1_move(-80,-1);
+	leg2_move(75, 1);
+	leg2_move(75, -1);
 
 }
 
