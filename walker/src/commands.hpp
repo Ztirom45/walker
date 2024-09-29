@@ -6,36 +6,46 @@ TODO smartpointer
 #pragma once
 
 
-#include <MeEncoderNew.h>
 #include <HardwareSerial.h>
 #include <Arduino.h>
 #include <Adafruit_ADXL345_U.h>
 #include <Vector.h>
+//#include <motors.hpp>
+//#include <MeMegaPi.h>
+
 #define MAX_COMMAND_LEN 50
 
 
-struct command{
+struct Command{
 	String command;
-	void (*setup)();
+	void (*setup)(Vector<String>);
 	void (*loop)();
-	int args;
+	int argc;
+	Command(
+		String command,
+		void (*setup)(Vector<String>),
+		void (*loop)(),
+		int argc
+	);
+	
+	
 };
 
-void init_commands();
+//void init_commands(*MeEcoderOnBoard Encoder_1,*MeEcoderOnBoard Encoder_2);
 
-void forward_setup(int speed);
+void forward_setup(Vector<String> args);
 void forward_loop();
 
-void stop_setup();
+void stop_setup(Vector<String> args);
 void stop_loop();
 
-void motor_right_setup(int speed);
+void motor_right_setup(Vector<String> args);
 void motor_right_loop();
 
-void motor_left_setup(int speed);
+void motor_left_setup(Vector<String> args);
 void motor_left_loop();
 
-void turn_setup(int speed);
+void turn_setup(Vector<String> args);
 void turn_loop();
 
 void follow_wall_setup();

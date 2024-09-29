@@ -6,31 +6,17 @@ there are No Competible Motor Driver Pins or general PWM pins to power the Motor
 LICENCE: GPL4
 written by Ztirom45
 */
-#include <MeMegaPi.h>
+
+
+#include <motors.hpp>
 
 
 
-#include <commands.hpp>
-//motors
-MeEncoderOnBoard Encoder_1(SLOT1);
-MeEncoderOnBoard Encoder_2(SLOT2);
-MeEncoderOnBoard Encoder_3(SLOT3);
-MeEncoderOnBoard Encoder_4(SLOT4);
+#include <HardwareSerial.h>
+#include <Arduino.h>
+#include <Adafruit_ADXL345_U.h>
+#include <Vector.h>
 
-void isr_process_encoder1(void){
-  if(digitalRead(Encoder_1.getPortB()) == 0){
-    Encoder_1.pulsePosMinus();
-  }else{
-    Encoder_1.pulsePosPlus();
-  }
-}
-void isr_process_encoder2(void){
-  if(digitalRead(Encoder_2.getPortB()) == 0){
-    Encoder_2.pulsePosMinus();
-  }else{
-    Encoder_2.pulsePosPlus();
-  }
-}
 
 //sensors
 double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor){
@@ -53,6 +39,7 @@ double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor){
 Adafruit_ADXL345_Unified acc = Adafruit_ADXL345_Unified(12345);
 Adafruit_ADXL345_Unified acc2 = Adafruit_ADXL345_Unified(12344);
 
+#include <commands.hpp>
 
 void wait_for_wifi_connection(){
   char recived = '7';
@@ -92,21 +79,13 @@ void setup(){
 	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
 	//setup for encoder, wich wont work anyways
 	//use with: runSpeed
-	Encoder_1.setPulse(8);
-	Encoder_1.setRatio(46.67);
-	Encoder_1.setPosPid(1.8,0,1.2);
-	Encoder_1.setSpeedPid(0.18,0,0);
-	
-	Encoder_2.setPulse(8);
-	Encoder_2.setRatio(46.67);
-	Encoder_2.setPosPid(1.8,0,1.2);
-	Encoder_2.setSpeedPid(0.18,0,0);
 	//setup wifimod
 	//Serial3.begin(115200);
 	//wait_for_wifi_connection();
 	
 	//setup command engine
-	init_commands();
+	init_encoder();
+	//init_commands(&Encoder_1,&Encoder_2);
 }
 
 //wall follower
