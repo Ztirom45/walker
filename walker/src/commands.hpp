@@ -10,8 +10,7 @@ TODO smartpointer
 #include <Arduino.h>
 #include <Adafruit_ADXL345_U.h>
 #include <Vector.h>
-//#include <motors.hpp>
-//#include <MeMegaPi.h>
+#include <motors.hpp>
 
 #define MAX_COMMAND_LEN 50
 
@@ -48,6 +47,7 @@ void motor_left_loop();
 void turn_setup(Vector<String> args);
 void turn_loop();
 
+#define STEARING_FAKTOR 1
 void follow_wall_setup();
 void follow_wall_loop();
 /*

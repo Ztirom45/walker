@@ -89,7 +89,6 @@ void setup(){
 }
 
 //wall follower
-#define STEARING_FAKTOR 1
 void follow_wall(){
 	float u1 = read_ultrasonic1();
 	float u2 = read_ultrasonic2();
