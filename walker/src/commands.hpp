@@ -50,6 +50,12 @@ void turn_loop();
 #define STEARING_FAKTOR 1
 void follow_wall_setup();
 void follow_wall_loop();
+
+/*
+void forward_legwise_setup();
+void forward_legwise_loop();
+*/
+
 /*
 void _setup();
 void _loop();
@@ -57,4 +63,7 @@ void _loop();
 #define COMMAND_COUNT 6
 
 //Vector<command> commands = Vector(array_initilizer);
-//command array_initilizer;
+extern Command commands[COMMAND_COUNT];
+
+void parse_and_execute_action(String action);
+	

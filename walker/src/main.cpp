@@ -80,12 +80,11 @@ void setup(){
 	//setup for encoder, wich wont work anyways
 	//use with: runSpeed
 	//setup wifimod
-	//Serial3.begin(115200);
-	//wait_for_wifi_connection();
+	Serial3.begin(115200);
+	wait_for_wifi_connection();
 	
 	//setup command engine
 	init_encoder();
-	//init_commands(&Encoder_1,&Encoder_2);
 }
 
 //wall follower
@@ -120,102 +119,6 @@ String read_message(){
 	return recived.substring(recived.indexOf("data:")+5,recived.indexOf("\n--end of message--"));
 }
 
-void parse_and_execute_action(String action){
-    if(action == ""){
-      return;
-    }
-    Serial.println(action);
-    int pos = 0;
-    String storage_array[MAX_COMMAND_LEN];
-    Vector<String> args(storage_array);
-    
-    pos = action.lastIndexOf(" ");
-    
-    action.remove(action.length()-2, action.length());//remove \n
-    while (pos != -1) {//separates string in reverse order and pushes to args
-        String token = action.substring(pos, action.length());
-        args.push_back(token);
-        action.remove(pos, pos + token.length());
-	pos = action.lastIndexOf(" ");
-    }
-    String command = action;//the part wich stays after the loop is the command
-    if(command == "forward"){
-      if(args.size() != 1){
-	Serial.print("error forward(speed) requires 1 argument, but ");
-	Serial.print(args.size());
-	Serial.println(" were given");
-	return;
-      }
-      Encoder_1.setTarPWM(args[0].toInt());
-      Encoder_2.setTarPWM(-(args[0].toInt()));
-      Serial.print("driving forward with speed: ");
-      Serial.println(args[0]);
-      return;
-    }
-    if(command == "stop"){
-      if(args.size() != 0){
-	Serial.print("error stop() requires 0 argument, but ");
-	Serial.print(args.size());
-	Serial.println(" were given");
-	return;
-      }
-      Encoder_1.setTarPWM(0);
-      Encoder_2.setTarPWM(0);
-      Serial.print("stops motors");
-      return;
-    }
-    if(command == "motorLeft"){
-      if(args.size() != 1){
-	Serial.print("error motorLeft(speed) requires 1 argument, but ");
-	Serial.print(args.size());
-	Serial.println(" were given");
-	return;
-      }
-      Encoder_2.setTarPWM(-(args[0].toInt()));
-      Serial.print("moving left Motor with speed: ");
-      Serial.println(args[0]);
-      return;
-    }
-    if(command == "motorRight"){
-      if(args.size() != 1){
-	Serial.print("error motoRight(speed) requires 1 argument, but ");
-	Serial.print(args.size());
-	Serial.println(" were given");
-	return;
-      }
-      Encoder_1.setTarPWM(args[0].toInt());
-      Serial.print("moving right Motor with speed: ");
-      Serial.println(args[0]);
-      return;
-    } 
-    if(command == "turn"){
-      if(args.size() != 1){
-	Serial.print("error turn(speed) requires 1 argument, but ");
-	Serial.print(args.size());
-	Serial.println(" were given");
-	return;
-      }
-      Encoder_1.setTarPWM(args[0].toInt());
-      Encoder_2.setTarPWM(args[0].toInt());
-      Serial.print("turning right Motor with speed: ");
-      Serial.println(args[0]);
-      return;
-    } 
-    if(command == "follow_wall"){
-      if(args.size() != 0){
-	Serial.print("error follow_wall() requires 0 argument, but ");
-	Serial.print(args.size());
-	Serial.println(" were given");
-	return;
-      } 
-      Serial.println("following wall");
-      while(true){
-	follow_wall();
-      }
-      return;
-    }   
-
-}
 
 void leg1_move(int speed,int direction){	
 	sensors_event_t event;
@@ -262,13 +165,15 @@ void walk(){//the motors spin in diffrent speeds, so the program needs to compan
 void loop(){
 	Encoder_1.loop();
 	Encoder_2.loop();
-
-	/*//debuging stuff
-	if(Serial3.available()>0){
+	
+	parse_and_execute_action(read_message());
+	//debuging stuff
+	/*if(Serial3.available()>0){
 	  Serial.print((char)Serial3.read());
 	}*/
+
 	//Encoder_2.setTarPWM(50.0);
 	//Encoder_1.setTarPWM(-55.0);
 	
-	walk();
+	//walk();
 }
