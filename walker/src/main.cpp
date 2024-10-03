@@ -66,48 +66,6 @@ String read_message(){
 }
 
 
-void leg1_move(int speed,int direction){	
-	sensors_event_t event;
-	
-	Encoder_1.setTarPWM(speed);
-	while(direction*event.gyro.y>0||event.gyro.y==0){	
-	  acc2.getEvent(&event);
-	  Serial.print("A_x: "); Serial.print(event.gyro.x); Serial.print(", ");
-	  Serial.print("B_y: "); Serial.print(event.gyro.y); Serial.print(", ");
-	  Serial.print("C_z: "); Serial.print(event.gyro.z); Serial.println(" ");
-	  
-	  Encoder_2.loop();
-	  Encoder_1.loop();
-	}
-	Encoder_1.setTarPWM(0);
-
-
-}
-void leg2_move(int speed,int direction){	
-	sensors_event_t event;
-	
-	Encoder_2.setTarPWM(speed);
-	while(direction*event.gyro.y>0||event.gyro.y==0){	
-	  acc.getEvent(&event);
-	  Serial.print("A_x: "); Serial.print(event.gyro.x); Serial.print(", ");
-	  Serial.print("B_y: "); Serial.print(event.gyro.y); Serial.print(", ");
-	  Serial.print("C_z: "); Serial.print(event.gyro.z); Serial.println(" ");
-	  
-	  Encoder_1.loop();
-	  Encoder_2.loop();
-	}
-	Encoder_2.setTarPWM(0);
-
-}
-
-void walk(){//the motors spin in diffrent speeds, so the program needs to compansate this
-	leg1_move(-80,1);
-	leg1_move(-80,-1);
-	leg2_move(75, 1);
-	leg2_move(75, -1);
-
-}
-
 void loop(){
 	Encoder_1.loop();
 	Encoder_2.loop();

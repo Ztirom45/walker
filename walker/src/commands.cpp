@@ -2,17 +2,16 @@
 #include <commands.hpp>
 
 Command::Command(String command,
-		void (*setup)(Vector<String>),
-		void (*loop)(),
-		int argc
-):command(command),setup(setup),loop(loop),argc(argc){
+		void (*setup)(Vector<String>,Command*),
+		void (*loop)(Command*)
+):command(command),setup(setup),loop(loop),speed(0){
 
 }
 
 
 
 
-void forward_setup(Vector<String> args){
+void forward_setup(Vector<String> args,Command *command){
       if(args.size() != 1){
 	Serial.print("forward(speed) expected 1 argument, but ");
 	Serial.print(args.size());
@@ -27,9 +26,9 @@ void forward_setup(Vector<String> args){
       Serial.print("driving forward with speed: ");
       Serial.println(speed);
 }
-void forward_loop(){}
+void forward_loop(Command *command){}
 
-void stop_setup(Vector<String> args){
+void stop_setup(Vector<String> args,Command *command){
       if(args.size() != 0){
 	Serial.print("stop() expected 0 argument, but ");
 	Serial.print(args.size());
@@ -40,10 +39,10 @@ void stop_setup(Vector<String> args){
       Encoder_2.setTarPWM(0);
       Serial.print("stopped");
 }
-void stop_loop(){
+void stop_loop(Command *command){
 }
 
-void motor_right_setup(Vector<String> args){
+void motor_right_setup(Vector<String> args,Command *command){
       if(args.size() != 1){
 	Serial.print("error motorRight(speed) expected 1 argument, but ");
 	Serial.print(args.size());
@@ -54,9 +53,9 @@ void motor_right_setup(Vector<String> args){
       Serial.print("driving forward with speed: ");
       Serial.println(args[0]);
 }
-void motor_right_loop(){}
+void motor_right_loop(Command *command){}
 
-void motor_left_setup(Vector<String> args){
+void motor_left_setup(Vector<String> args,Command *command){
       if(args.size() != 1){
 	Serial.print("error motorLeft(speed) expected 1 argument, but ");
 	Serial.print(args.size());
@@ -68,9 +67,9 @@ void motor_left_setup(Vector<String> args){
       Serial.println(args[0]);
 }
 
-void motor_left_loop(){}
+void motor_left_loop(Command *command){}
 
-void turn_setup(Vector<String> args){
+void turn_setup(Vector<String> args,Command *command){
       if(args.size() != 1){
 	Serial.print("error turn(speed) requires 1 argument, but ");
 	Serial.print(args.size());
@@ -82,9 +81,9 @@ void turn_setup(Vector<String> args){
       Serial.print("turning right Motor with speed: ");
       Serial.println(args[0]);
 }
-void turn_loop(){}
+void turn_loop(Command *command){}
 
-void follow_wall_setup(Vector<String> args){
+void follow_wall_setup(Vector<String> args,Command *command){
       if(args.size() != 0){
 	Serial.print("error: follow_wall() requires 0 argument, but ");
 	Serial.print(args.size());
@@ -93,7 +92,7 @@ void follow_wall_setup(Vector<String> args){
       } 
 }
 
-void follow_wall_loop(){
+void follow_wall_loop(Command *command){
 	float u1 = read_ultrasonic1();
 	float u2 = read_ultrasonic2();
 	float us_div = u1-u2;
@@ -110,25 +109,75 @@ void follow_wall_loop(){
 	
 }
 
-/*
-void init_commands(*MeEncoderOnBoard Encoder_1,*MeEcoderOnBoard Encoder_2){
-  Serial.println("hello");
+void leg1_move(int speed,int direction){	
+	sensors_event_t event;
+	
+	Encoder_1.setTarPWM(speed);
+	while(direction*event.gyro.y>0||event.gyro.y==0){	
+	  acc2.getEvent(&event);
+	  Serial.print("A_x: "); Serial.print(event.gyro.x); Serial.print(", ");
+	  Serial.print("B_y: "); Serial.print(event.gyro.y); Serial.print(", ");
+	  Serial.print("C_z: "); Serial.print(event.gyro.z); Serial.println(" ");
+	  
+	  Encoder_2.loop();
+	  Encoder_1.loop();
+	}
+	Encoder_1.setTarPWM(0);
 
-};*/
+
+}
+void leg2_move(int speed,int direction){	
+	sensors_event_t event;
+	
+	Encoder_2.setTarPWM(speed);
+	while(direction*event.gyro.y>0||event.gyro.y==0){	
+	  acc.getEvent(&event);
+	  Serial.print("A_x: "); Serial.print(event.gyro.x); Serial.print(", ");
+	  Serial.print("B_y: "); Serial.print(event.gyro.y); Serial.print(", ");
+	  Serial.print("C_z: "); Serial.print(event.gyro.z); Serial.println(" ");
+	  
+	  Encoder_1.loop();
+	  Encoder_2.loop();
+	}
+	Encoder_2.setTarPWM(0);
+
+}
+
+void forward_legwise_setup(Vector<String> args,Command *command){
+      if(args.size() != 1){
+	Serial.print("error: forward_legwise(speed) requires 1 argument, but ");
+	Serial.print(args.size());
+	Serial.println(" were given");
+	return;
+      } 
+      command->speed = args[0].toInt();
+      Serial.print("walking legwise with speed: ");
+      Serial.println(command->speed);
+
+}
+void forward_legwise_loop(Command *command){
+      Serial.println("hi");
+      leg1_move(-command->speed,1);
+      leg1_move(-command->speed,-1);
+      leg2_move(command->speed, 1);
+      leg2_move(command->speed, -1);
+
+}
 
 Command commands[COMMAND_COUNT] ={
-	Command("stop",&stop_setup,&stop_loop,0),
-	Command("forward",&forward_setup,&forward_loop,1),    
-	Command("motorRight",&motor_right_setup,&motor_right_loop,1),
-	Command("motorLeft",&motor_left_setup,&motor_left_loop,1),
-	Command("turn",&turn_setup,&turn_loop,1),
-	Command("follow_wall",&follow_wall_setup,&follow_wall_loop,0),
+	Command("stop",&stop_setup,&stop_loop),
+	Command("forward",&forward_setup,&forward_loop),    
+	Command("motor_right",&motor_right_setup,&motor_right_loop),
+	Command("motor_left",&motor_left_setup,&motor_left_loop),
+	Command("turn",&turn_setup,&turn_loop),
+	Command("follow_wall",&follow_wall_setup,&follow_wall_loop),
+	Command("forward_legwise",&forward_legwise_setup,&forward_legwise_loop),
 };
 size_t current_command = 0;
 
 void parse_and_execute_action(String action){
     if(action == ""){
-      commands[current_command].loop();
+      commands[current_command].loop(&commands[current_command]);
       return;
     }
     Serial.println(action);
@@ -144,10 +193,10 @@ void parse_and_execute_action(String action){
         action.remove(pos, pos + token.length());
 	pos = action.lastIndexOf(" ");
     }
-    for(int i=0;i<=COMMAND_COUNT;i++){
+    for(int i=0;i<COMMAND_COUNT;i++){
       Serial.println(i);
       if(commands[i].command == action){
-	commands[i].setup(args);
+	commands[i].setup(args,&commands[i]);
 	current_command = i;
 	return;
       }
