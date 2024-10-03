@@ -166,11 +166,11 @@ void loop(){
 	Encoder_1.loop();
 	Encoder_2.loop();
 	
-	parse_and_execute_action(read_message());
+	parse_and_execute_action(""/*read_message()*/);
 	//debuging stuff
-	/*if(Serial3.available()>0){
+	if(Serial3.available()>0){
 	  Serial.print((char)Serial3.read());
-	}*/
+	}
 
 	//Encoder_2.setTarPWM(50.0);
 	//Encoder_1.setTarPWM(-55.0);

@@ -120,16 +120,18 @@ void init_commands(*MeEncoderOnBoard Encoder_1,*MeEcoderOnBoard Encoder_2){
 };*/
 
 Command commands[COMMAND_COUNT] ={
-	Command("forward",&forward_setup,&forward_loop,1),    
 	Command("stop",&stop_setup,&stop_loop,0),
+	Command("forward",&forward_setup,&forward_loop,1),    
 	Command("motorRight",&motor_right_setup,&motor_right_loop,1),
 	Command("motorLeft",&motor_left_setup,&motor_left_loop,1),
 	Command("turn",&turn_setup,&turn_loop,1),
 	Command("follow_wall",&follow_wall_setup,&follow_wall_loop,0),
 };
+size_t current_command = 0;
 
 void parse_and_execute_action(String action){
     if(action == ""){
+      commands[current_command].loop();
       return;
     }
     Serial.println(action);
@@ -145,9 +147,10 @@ void parse_and_execute_action(String action){
         action.remove(pos, pos + token.length());
 	pos = action.lastIndexOf(" ");
     }
-    for(Command command:commands){
-      if(command.command == action){
-	command.setup(args);
+    for(int i=0;i++;i<COMMAND_COUNT){
+      if(commands[i].command == action){
+	commands[i].setup(args);
+	current_command = i;
 	return;
       }
 
