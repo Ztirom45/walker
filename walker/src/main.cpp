@@ -17,29 +17,8 @@ written by Ztirom45
 #include <Adafruit_ADXL345_U.h>
 #include <Vector.h>
 
-
-//sensors
-double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor){
-  //trigger
-  pinMode(trig_pin, OUTPUT);
-  digitalWrite(trig_pin,LOW);
-  delayMicroseconds(2);
-  digitalWrite(trig_pin,HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trig_pin,LOW);
-
-  //read
-  pinMode(echo_pin,INPUT);
-  return (double)pulseIn(echo_pin,HIGH) *conversion_factor;
-}
-
-#define read_ultrasonic1() ultrasonic_cm(28,30,0.034 / 2.0)
-#define read_ultrasonic2() ultrasonic_cm(29,39,0.034 / 2.0)
-/* Assign a unique ID to this sensor at the same time */
-Adafruit_ADXL345_Unified acc = Adafruit_ADXL345_Unified(12345);
-Adafruit_ADXL345_Unified acc2 = Adafruit_ADXL345_Unified(12344);
-
 #include <commands.hpp>
+#include <sensors.hpp>
 
 void wait_for_wifi_connection(){
   char recived = '7';
@@ -60,20 +39,6 @@ void wait_for_wifi_connection(){
 void setup(){	
 	Serial.begin(9600);
 	Serial.println("Start");
-	//setup sensors
-	if(!acc.begin(0x53))
-	{
-	  Serial.println("no ADXL345 on53d detected ... Check your wiring!");
-	  while(1);
-	}
-	if(!acc2.begin(0x1d))
-	{
-	  Serial.println("no ADXL345 on 0x1d detected ... Check your wiring!");
-	  while(1);
-	}
-	acc.setRange(ADXL345_RANGE_16_G);
-	acc2.setRange(ADXL345_RANGE_16_G);
-	
 	//setup motors
 	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
 	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
@@ -86,25 +51,6 @@ void setup(){
 	//setup command engine
 	init_encoder();
 }
-
-//wall follower
-void follow_wall(){
-	float u1 = read_ultrasonic1();
-	float u2 = read_ultrasonic2();
-	float us_div = u1-u2;
-	Serial.print(" 1:");
-	Serial.print(u1);
-	Serial.print(" 2:");
-	Serial.print(u2);
-	Serial.print(" div:");
-	Serial.println(us_div*STEARING_FAKTOR);
-	Encoder_1.setTarPWM(-100-us_div*STEARING_FAKTOR);
-	Encoder_2.setTarPWM(100+us_div*STEARING_FAKTOR);
-	Encoder_1.loop();
-	Encoder_2.loop();
-	
-}
-
 
 
 //do not write "data:" as topic or "/////" as message or topic

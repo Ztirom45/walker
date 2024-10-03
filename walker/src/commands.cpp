@@ -94,8 +94,8 @@ void follow_wall_setup(Vector<String> args){
 }
 
 void follow_wall_loop(){
-	float u1 = 0;//read_ultrasonic1();
-	float u2 = 0;//read_ultrasonic2();
+	float u1 = read_ultrasonic1();
+	float u2 = read_ultrasonic2();
 	float us_div = u1-u2;
 	Serial.print(" 1:");
 	Serial.print(u1);

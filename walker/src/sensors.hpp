@@ -1,0 +1,16 @@
+#pragma once
+
+#include <HardwareSerial.h>
+#include <Arduino.h>
+#include <Adafruit_ADXL345_U.h>
+#include <Vector.h>
+
+double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor);
+
+#define read_ultrasonic1() ultrasonic_cm(28,30,0.034 / 2.0)
+#define read_ultrasonic2() ultrasonic_cm(29,39,0.034 / 2.0)
+/* Assign a unique ID to this sensor at the same time */
+extern Adafruit_ADXL345_Unified acc;
+extern Adafruit_ADXL345_Unified acc2;
+
+

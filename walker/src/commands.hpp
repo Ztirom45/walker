@@ -11,6 +11,7 @@ TODO smartpointer
 #include <Adafruit_ADXL345_U.h>
 #include <Vector.h>
 #include <motors.hpp>
+#include <sensors.hpp>
 
 #define MAX_COMMAND_LEN 50
 
