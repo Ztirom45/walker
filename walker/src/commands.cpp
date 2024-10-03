@@ -41,9 +41,6 @@ void stop_setup(Vector<String> args){
       Serial.print("stopped");
 }
 void stop_loop(){
-      Encoder_1.setTarPWM(0);
-      Encoder_2.setTarPWM(0);
-      Serial.print("stop loop");
 }
 
 void motor_right_setup(Vector<String> args){
@@ -147,7 +144,8 @@ void parse_and_execute_action(String action){
         action.remove(pos, pos + token.length());
 	pos = action.lastIndexOf(" ");
     }
-    for(int i=0;i++;i<COMMAND_COUNT){
+    for(int i=0;i<=COMMAND_COUNT;i++){
+      Serial.println(i);
       if(commands[i].command == action){
 	commands[i].setup(args);
 	current_command = i;
