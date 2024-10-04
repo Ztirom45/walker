@@ -57,7 +57,10 @@ void forward_legwise_loop(Command *command);
 void leg1_move(int speed,int direction);
 void leg2_move(int speed,int direction);
 
-#define COMMAND_COUNT 7
+void forward_gyro_setup(Vector<String> args,Command *command);
+void forward_gyro_loop(Command *command);
+
+#define COMMAND_COUNT 8
 
 //Vector<command> commands = Vector(array_initilizer);
 extern Command commands[COMMAND_COUNT];

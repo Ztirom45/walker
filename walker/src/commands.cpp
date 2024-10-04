@@ -163,6 +163,26 @@ void forward_legwise_loop(Command *command){
       leg2_move(command->speed, -1);
 
 }
+void forward_gyro_setup(Vector<String> args,Command *command){
+      if(args.size() != 1){
+	Serial.print("error: forward_legwise(speed) requires 1 argument, but ");
+	Serial.print(args.size());
+	Serial.println(" were given");
+	return;
+      } 
+      command->speed = args[0].toInt();
+      Serial.print("walking legwise with speed: ");
+      Serial.println(command->speed);
+
+}
+void forward_gyro_loop(Command *command){
+      Serial.println("hi");
+      leg1_move(-command->speed,1);
+      leg1_move(-command->speed,-1);
+      leg2_move(command->speed, 1);
+      leg2_move(command->speed, -1);
+
+}
 
 Command commands[COMMAND_COUNT] ={
 	Command("stop",&stop_setup,&stop_loop),
@@ -171,8 +191,9 @@ Command commands[COMMAND_COUNT] ={
 	Command("motor_left",&motor_left_setup,&motor_left_loop),
 	Command("turn",&turn_setup,&turn_loop),
 	Command("follow_wall",&follow_wall_setup,&follow_wall_loop),
-	Command("forward_legwise",&forward_legwise_setup,&forward_legwise_loop),
+	Command("forward_gyro",&forward_gyro_setup,&forward_gyro_loop)
 };
+
 size_t current_command = 0;
 
 void parse_and_execute_action(String action){

@@ -66,11 +66,28 @@ String read_message(){
 }
 
 
+float x_rot = 0;
 void loop(){
 	Encoder_1.loop();
 	Encoder_2.loop();
-	
-	parse_and_execute_action(read_message());
+  /* Get new sensor events with the readings */
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+ 
+  x_rot += g.gyro.x+0.21;
+  Serial.println(x_rot);
+  /*
+  Serial.print("Rotation X: ");
+  Serial.print(g.gyro.x+0.21);
+  Serial.print(", Y: ");
+  Serial.print(g.gyro.y-0.02);
+  Serial.print(", Z: ");
+  Serial.print(g.gyro.z+0.05);
+  Serial.println(" rad/s");*/
+
+
+  delay(500);
+	//parse_and_execute_action(read_message());
 	//debuging stuff
 	/*if(Serial3.available()>0){
 	  Serial.print((char)Serial3.read());
