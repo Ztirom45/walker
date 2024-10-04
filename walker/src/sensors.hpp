@@ -4,6 +4,9 @@
 #include <Arduino.h>
 #include <Adafruit_ADXL345_U.h>
 #include <Vector.h>
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
+#include <Wire.h>
 
 double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor);
 
@@ -12,5 +15,5 @@ double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor);
 /* Assign a unique ID to this sensor at the same time */
 extern Adafruit_ADXL345_Unified acc;
 extern Adafruit_ADXL345_Unified acc2;
-
+extern Adafruit_MPU6050 mpu;
 

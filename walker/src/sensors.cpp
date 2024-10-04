@@ -4,6 +4,8 @@
 
 Adafruit_ADXL345_Unified acc = Adafruit_ADXL345_Unified(12345);
 Adafruit_ADXL345_Unified acc2 = Adafruit_ADXL345_Unified(12344);
+Adafruit_MPU6050 mpu;
+
 double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor){
   //trigger
   pinMode(trig_pin, OUTPUT);

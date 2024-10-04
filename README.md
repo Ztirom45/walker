@@ -41,12 +41,13 @@ data:<message>
 
 ### comand list (Work in Progress)⌨️
 - [X] forward(speed) ⥣
-- [X] leftMotor(speed) [⟲ X]
-- [X] rightMotor(speed) [X ⟲]
+- [X] left_motor(speed) [⟲ X]
+- [X] right_motor(speed) [X ⟲]
 - [ ] turn(speed, degree) ⟲ requires Gyro
 - [ ] turn(speed) ⟲ +==right -==left
 - [X] stop()
 - [X] follow_wall()
+- [X] walk_stepwise() (walk with leg tracking)
 
 ### TODO:
 - [ ] Gyro
