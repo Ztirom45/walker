@@ -48,8 +48,8 @@ void setup(){
 	Serial3.begin(115200);
 	wait_for_wifi_connection();
 	
-	//setup command engine
 	init_encoder();
+	init_sensors();
 }
 
 

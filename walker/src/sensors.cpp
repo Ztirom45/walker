@@ -36,5 +36,8 @@ void init_sensors(){
 	acc.setRange(ADXL345_RANGE_16_G);
 	acc2.setRange(ADXL345_RANGE_16_G);
 	
-
+	if (!mpu.begin()) {
+	  Serial.println("Failed to find MPU6050 chip");
+	  while(1);
+	}
 }
