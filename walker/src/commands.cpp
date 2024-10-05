@@ -116,8 +116,8 @@ void leg1_move(int speed,int direction){
 	while(direction*event.gyro.y>0||event.gyro.y==0){	
 	  acc2.getEvent(&event);
 	  Serial.print("A_x: "); Serial.print(event.gyro.x); Serial.print(", ");
-	  Serial.print("B_y: "); Serial.print(event.gyro.y); Serial.print(", ");
-	  Serial.print("C_z: "); Serial.print(event.gyro.z); Serial.println(" ");
+	  Serial.print("A_y: "); Serial.print(event.gyro.y); Serial.print(", ");
+	  Serial.print("A_z: "); Serial.print(event.gyro.z); Serial.println(" ");
 	  
 	  Encoder_2.loop();
 	  Encoder_1.loop();
@@ -132,9 +132,9 @@ void leg2_move(int speed,int direction){
 	Encoder_2.setTarPWM(speed);
 	while(direction*event.gyro.y>0||event.gyro.y==0){	
 	  acc.getEvent(&event);
-	  Serial.print("A_x: "); Serial.print(event.gyro.x); Serial.print(", ");
+	  Serial.print("B_x: "); Serial.print(event.gyro.x); Serial.print(", ");
 	  Serial.print("B_y: "); Serial.print(event.gyro.y); Serial.print(", ");
-	  Serial.print("C_z: "); Serial.print(event.gyro.z); Serial.println(" ");
+	  Serial.print("B_z: "); Serial.print(event.gyro.z); Serial.println(" ");
 	  
 	  Encoder_1.loop();
 	  Encoder_2.loop();
@@ -165,7 +165,7 @@ void forward_legwise_loop(Command *command){
 }
 void forward_gyro_setup(Vector<String> args,Command *command){
       if(args.size() != 1){
-	Serial.print("error: forward_legwise(speed) requires 1 argument, but ");
+	Serial.print("error: forward_gyro(speed) requires 1 argument, but ");
 	Serial.print(args.size());
 	Serial.println(" were given");
 	return;
@@ -176,11 +176,11 @@ void forward_gyro_setup(Vector<String> args,Command *command){
 
 }
 void forward_gyro_loop(Command *command){
-      Serial.println("hi");
-      leg1_move(-command->speed,1);
-      leg1_move(-command->speed,-1);
-      leg2_move(command->speed, 1);
-      leg2_move(command->speed, -1);
+      const float stiring = command->speed+gyro.gyro_x*20; 
+      Encoder_1.setTarPWM(stiring);
+      Encoder_2.setTarPWM(-stiring);
+
+
 
 }
 
@@ -191,6 +191,7 @@ Command commands[COMMAND_COUNT] ={
 	Command("motor_left",&motor_left_setup,&motor_left_loop),
 	Command("turn",&turn_setup,&turn_loop),
 	Command("follow_wall",&follow_wall_setup,&follow_wall_loop),
+	Command("forward_legwise",&forward_legwise_setup,&forward_legwise_loop),
 	Command("forward_gyro",&forward_gyro_setup,&forward_gyro_loop)
 };
 
@@ -205,7 +206,6 @@ void parse_and_execute_action(String action){
     String storage_array[MAX_COMMAND_LEN];
     Vector<String> args(storage_array);
      
-    action.remove(action.length()-2, action.length());//remove \n 
     int pos = action.lastIndexOf(" ");
     while (pos != -1) {//separates string in reverse order and pushes to args
         String token = action.substring(pos, action.length());

@@ -17,5 +17,16 @@ void init_sensors();
 /* Assign a unique ID to this sensor at the same time */
 extern Adafruit_ADXL345_Unified acc;
 extern Adafruit_ADXL345_Unified acc2;
-extern Adafruit_MPU6050 mpu;
+
+struct Gyro{
+	Adafruit_MPU6050 mpu;
+	float gyro_x;
+	float gyro_y;
+	float gyro_z;
+	void init();
+	void update();
+};
+
+
+extern Gyro gyro;
 

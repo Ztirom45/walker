@@ -9,6 +9,7 @@ follow the setup instructions
 
 ### setup
 - rename ./wifimod/src/password_example.h to password.h
+- enter your wifi and mqtt server in this file
 
 ```
 mv wifimod/src/password_example.h wifimod/src/password.h
@@ -26,13 +27,11 @@ mv wifimod/src/password_example.h wifimod/src/password.h
 ### a protocol is used to transfare mqtt messages 🖥️⟶ 🖥️
 - a message looks like this:
 ```
---new message-- 
-data:<message>
---end of message--
+-m<message>-e
 ```
-- the arduino looks for `"--new message--"` to reconize a new message
-- it reads the data in between of the `"data:"` and `"--end of message--"`
-- **IMPORTANT:** do not use `"data:"` or `"--end of message--"` inside a message
+- the arduino looks for `"-m"` to reconize a new message
+- it reads the data in between of the `message[2]` and `"-e"`
+- **IMPORTANT:** do not use a `"-"` inside a message
 - **IMPORTANT:** the `<message>` part can't longer than `MAX_COMMAND_LEN` (50 chars)
 
 ### the walker uses a protocol to move via mqtt (Work in Progress) 🖥️⟶ 🖥️:
@@ -47,11 +46,12 @@ data:<message>
 - [ ] turn(speed) ⟲ +==right -==left
 - [X] stop()
 - [X] follow_wall()
-- [X] walk_stepwise() (walk with leg tracking)
+- [X] forward_stepwise() (walk with leg tracking, experimental)
+- [ ] forward_gyro()
 
 ### TODO:
-- [ ] Gyro
+- [X] Gyro
 - [ ] controller app
 - [ ] maybe camera
-- [ ] fix motor acceleration problem
-- [ ] real support for commands which are looped (like follow_wall)
+- [X] fix motor acceleration problem
+- [X] real support for commands which are looped (like follow_wall)

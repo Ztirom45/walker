@@ -22,11 +22,9 @@ PubSubClient client(wifiClient);
 
 //action when client recived a message
 void callback(char* topic, byte *payload, unsigned int length) {
-    Serial.println("--new message--");
-    Serial.print("data:");  
+    Serial.print("-m");
     Serial.write(payload, length);
-    Serial.print("\n");
-    Serial.println("--end of message--");
+    Serial.println("-e");
 }
 
 void setup_wifi(){

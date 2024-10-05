@@ -62,7 +62,6 @@ void forward_gyro_loop(Command *command);
 
 #define COMMAND_COUNT 8
 
-//Vector<command> commands = Vector(array_initilizer);
 extern Command commands[COMMAND_COUNT];
 
 void parse_and_execute_action(String action);

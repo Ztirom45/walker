@@ -45,11 +45,10 @@ void setup(){
 	//setup for encoder, wich wont work anyways
 	//use with: runSpeed
 	//setup wifimod
-	Serial3.begin(115200);
-	wait_for_wifi_connection();
-	
 	init_encoder();
 	init_sensors();
+	Serial3.begin(115200);
+	wait_for_wifi_connection();
 }
 
 
@@ -59,40 +58,22 @@ String read_message(){
 	  return "";
 	}
 	String recived = Serial3.readString();
-	if(recived.substring(0,15)!=String("--new message--")){
+	if(recived.substring(0,2)!=String("-m")){
 	  return "";
 	}
-	return recived.substring(recived.indexOf("data:")+5,recived.indexOf("\n--end of message--"));
+	return recived.substring(2,recived.indexOf("-e"));
 }
 
 
 float x_rot = 0;
 void loop(){
-	Encoder_1.loop();
-	Encoder_2.loop();
-  /* Get new sensor events with the readings */
-  sensors_event_t a, g, temp;
-  mpu.getEvent(&a, &g, &temp);
- 
-  x_rot += g.gyro.x+0.21;
-  Serial.println(x_rot);
-  /*
-  Serial.print("Rotation X: ");
-  Serial.print(g.gyro.x+0.21);
-  Serial.print(", Y: ");
-  Serial.print(g.gyro.y-0.02);
-  Serial.print(", Z: ");
-  Serial.print(g.gyro.z+0.05);
-  Serial.println(" rad/s");*/
-
-
-  delay(500);
-	//parse_and_execute_action(read_message());
-	//debuging stuff
-	/*if(Serial3.available()>0){
-	  Serial.print((char)Serial3.read());
-	}*/
+  Encoder_1.loop();
+  Encoder_2.loop();
+  parse_and_execute_action(read_message());
+  //debuging stuff
+  /*if(Serial3.available()>0){
+      Serial.print((char)Serial3.read());
+  }*/
 
 	
-	//walk();
 }
