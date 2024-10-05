@@ -109,6 +109,7 @@ void follow_wall_loop(Command *command){
 	
 }
 
+#ifdef LEG_TRACKING_ENABLET
 void leg1_move(int speed,int direction){	
 	sensors_event_t event;
 	
@@ -142,7 +143,6 @@ void leg2_move(int speed,int direction){
 	Encoder_2.setTarPWM(0);
 
 }
-
 void forward_legwise_setup(Vector<String> args,Command *command){
       if(args.size() != 1){
 	Serial.print("error: forward_legwise(speed) requires 1 argument, but ");
@@ -163,6 +163,7 @@ void forward_legwise_loop(Command *command){
       leg2_move(command->speed, -1);
 
 }
+#endif 
 void forward_gyro_setup(Vector<String> args,Command *command){
       if(args.size() != 1){
 	Serial.print("error: forward_gyro(speed) requires 1 argument, but ");
@@ -191,7 +192,9 @@ Command commands[COMMAND_COUNT] ={
 	Command("motor_left",&motor_left_setup,&motor_left_loop),
 	Command("turn",&turn_setup,&turn_loop),
 	Command("follow_wall",&follow_wall_setup,&follow_wall_loop),
+	#ifdef LEG_TRACKING_ENABLET
 	Command("forward_legwise",&forward_legwise_setup,&forward_legwise_loop),
+	#endif
 	Command("forward_gyro",&forward_gyro_setup,&forward_gyro_loop)
 };
 
@@ -215,7 +218,6 @@ void parse_and_execute_action(String action){
 	pos = action.lastIndexOf(" ");
     }
     for(int i=0;i<COMMAND_COUNT;i++){
-      Serial.println(i);
       if(commands[i].command == action){
 	commands[i].setup(args,&commands[i]);
 	current_command = i;

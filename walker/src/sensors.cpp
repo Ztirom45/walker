@@ -48,6 +48,7 @@ void Gyro::update(){
 
 void init_sensors(){
 	//setup sensors
+	#ifdef LEG_TRACKING_ENABLET
 	if(!acc.begin(0x53))
 	{
 	  Serial.println("no ADXL345 on 53d detected ... Check your wiring!");
@@ -58,5 +59,6 @@ void init_sensors(){
 	}
 	acc.setRange(ADXL345_RANGE_16_G);
 	acc2.setRange(ADXL345_RANGE_16_G);
+	#endif
 	gyro.init();
 }

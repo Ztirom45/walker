@@ -51,16 +51,22 @@ void turn_loop(Command *command);
 void follow_wall_setup(Vector<String> args,Command *command);
 void follow_wall_loop(Command *command);
 
+#ifdef LEG_TRACKING_ENABLET
 void forward_legwise_setup(Vector<String> args,Command *command);
 void forward_legwise_loop(Command *command);
 //require functions:
 void leg1_move(int speed,int direction);
 void leg2_move(int speed,int direction);
+#endif
 
 void forward_gyro_setup(Vector<String> args,Command *command);
 void forward_gyro_loop(Command *command);
 
+#ifdef LEG_TRACKING_ENABLET
 #define COMMAND_COUNT 8
+#else
+#define COMMAND_COUNT 7
+#endif
 
 extern Command commands[COMMAND_COUNT];
 
