@@ -46,7 +46,7 @@ mv wifimod/src/password_example.h wifimod/src/password.h
 - [ ] turn(speed) ⟲ +==right -==left
 - [X] stop()
 - [X] follow_wall()
-- [X] forward_stepwise() (walk with leg tracking, experimental)
+- [X] forward_stepwise() (walk with leg tracking, experimental: enable in sensors.hpp)
 - [ ] forward_gyro()
 
 ### TODO:

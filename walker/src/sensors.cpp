@@ -21,6 +21,9 @@ double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor){
 }
 
 void Gyro::init(){
+      this->gyro_x = 0;
+      this->gyro_y = 0;
+      this->gyro_z = 0;
       if (!mpu.begin()) {
 	Serial.println("Failed to find MPU6050 chip");
       }
@@ -33,17 +36,18 @@ void Gyro::update(){
   sensors_event_t a, g, temp;
   this->mpu.getEvent(&a, &g, &temp);
   
+  this->gyro_x += g.gyro.x+0.205;
+  Serial.println(this->gyro_x);
   if(this->gyro_x>6.28){this->gyro_x-=12.56;}
   if(this->gyro_x<-6.28){this->gyro_x+=12.56;}
-  this->gyro_x += g.gyro.x+0.21;
   
+  this->gyro_y += g.gyro.y-0.02;
   if(this->gyro_y>6.28){this->gyro_y-=12.56;}
   if(this->gyro_y<-6.28){this->gyro_y+=12.56;} 
-  this->gyro_y += g.gyro.y-0.02;
   
+  this->gyro_z += g.gyro.z+0.05;
   if(this->gyro_z>6.28){this->gyro_z-=12.56;}
   if(this->gyro_z<-6.28){this->gyro_z+=12.56;}
-  this->gyro_z += g.gyro.z+0.05;
 }
 
 void init_sensors(){

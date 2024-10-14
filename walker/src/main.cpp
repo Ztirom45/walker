@@ -69,6 +69,7 @@ float x_rot = 0;
 void loop(){
   Encoder_1.loop();
   Encoder_2.loop();
+  gyro.update();
   parse_and_execute_action(read_message());
   //debuging stuff
   /*if(Serial3.available()>0){
