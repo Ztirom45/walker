@@ -28,6 +28,8 @@ struct Gyro{
 	float gyro_x;
 	float gyro_y;
 	float gyro_z;
+	sensors_event_t a, g, temp;
+	Gyro();
 	void init();
 	void update();
 };

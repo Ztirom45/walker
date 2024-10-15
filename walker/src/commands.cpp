@@ -199,16 +199,17 @@ Command commands[COMMAND_COUNT] ={
 };
 
 size_t current_command = 0;
+String storage_array[MAX_COMMAND_LEN];
+Vector<String> args(storage_array);
 
 void parse_and_execute_action(String action){
-    if(action == ""){
+    if(!action){//string is empty
       commands[current_command].loop(&commands[current_command]);
       return;
     }
     Serial.println(action);
-    String storage_array[MAX_COMMAND_LEN];
-    Vector<String> args(storage_array);
-     
+    
+    args.clear();
     int pos = action.lastIndexOf(" ");
     while (pos != -1) {//separates string in reverse order and pushes to args
         String token = action.substring(pos, action.length());

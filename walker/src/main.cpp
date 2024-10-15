@@ -36,19 +36,24 @@ void wait_for_wifi_connection(){
   }
   Serial.println("connected to WiFi");
 }
+String recived;
 void setup(){	
 	Serial.begin(9600);
 	Serial.println("Start");
 	//setup motors
 	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
 	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
-	//setup for encoder, wich wont work anyways
+	//setup for encoder, does not work anyways
 	//use with: runSpeed
-	//setup wifimod
 	init_encoder();
 	init_sensors();
+	
+	//setup wifimod
 	Serial3.begin(115200);
 	wait_for_wifi_connection();
+	
+	//setup commands	
+	recived.reserve(MAX_COMMAND_LEN);
 }
 
 
@@ -57,8 +62,8 @@ String read_message(){
 	if(Serial3.available()>0){
 	  return "";
 	}
-	String recived = Serial3.readString();
-	if(recived.substring(0,2)!=String("-m")){
+	recived = Serial3.readString();
+	if(recived.substring(0,2)!="-m"){
 	  return "";
 	}
 	return recived.substring(2,recived.indexOf("-e"));
@@ -67,6 +72,7 @@ String read_message(){
 
 float x_rot = 0;
 void loop(){
+  long start = micros();
   Encoder_1.loop();
   Encoder_2.loop();
   gyro.update();
@@ -75,6 +81,6 @@ void loop(){
   /*if(Serial3.available()>0){
       Serial.print((char)Serial3.read());
   }*/
-
+  Serial.println(micros() - start);
 	
 }
