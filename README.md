@@ -43,11 +43,11 @@ mv wifimod/src/password_example.h wifimod/src/password.h
 - [X] left_motor(speed) [⟲ X]
 - [X] right_motor(speed) [X ⟲]
 - [ ] turn(speed, degree) ⟲ requires Gyro
-- [ ] turn(speed) ⟲ +==right -==left
+- [X] turn(speed) ⟲ +==right -==left
 - [X] stop()
 - [X] follow_wall()
 - [X] forward_stepwise() (walk with leg tracking, experimental: enable in sensors.hpp)
-- [ ] forward_gyro()
+- [X] forward_gyro() (Work in progress)
 
 ### TODO:
 - [X] Gyro

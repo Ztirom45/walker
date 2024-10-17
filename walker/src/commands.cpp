@@ -203,7 +203,7 @@ String storage_array[MAX_COMMAND_LEN];
 Vector<String> args(storage_array);
 
 void parse_and_execute_action(String action){
-    if(!action){//string is empty
+  if(action==""){//string is empty
       commands[current_command].loop(&commands[current_command]);
       return;
     }

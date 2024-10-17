@@ -6,7 +6,6 @@ TODO smartpointer
 #pragma once
 
 
-#include <HardwareSerial.h>
 #include <Arduino.h>
 #include <Adafruit_ADXL345_U.h>
 #include <Vector.h>

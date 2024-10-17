@@ -59,10 +59,12 @@ void setup(){
 
 //do not write "data:" as topic or "/////" as message or topic
 String read_message(){
-	if(Serial3.available()>0){
+	if(Serial3.available()<=0){
+
 	  return "";
 	}
 	recived = Serial3.readString();
+	
 	if(recived.substring(0,2)!="-m"){
 	  return "";
 	}
@@ -71,16 +73,19 @@ String read_message(){
 
 
 float x_rot = 0;
-void loop(){
-  long start = micros();
+void loop(){ 
+  unsigned long start = micros();
   Encoder_1.loop();
   Encoder_2.loop();
   gyro.update();
+
   parse_and_execute_action(read_message());
+  
+  Serial.print("micros: ");
+  Serial.println(micros() - start);
   //debuging stuff
   /*if(Serial3.available()>0){
       Serial.print((char)Serial3.read());
   }*/
-  Serial.println(micros() - start);
 	
 }
