@@ -40,9 +40,8 @@ void Gyro::update(){
   this->mpu.getEvent(&this->a, &this->g, &this->temp);
   
   this->gyro_x += this->g.gyro.x+0.205;
-  Serial.println(this->gyro_x);
-  if(this->gyro_x>6.28){this->gyro_x-=12.56;}
-  if(this->gyro_x<-6.28){this->gyro_x+=12.56;}
+  //if(this->gyro_x>6.28){this->gyro_x-=12.56;}
+  //if(this->gyro_x<-6.28){this->gyro_x+=12.56;}
   
   this->gyro_y += this->g.gyro.y-0.02;
   if(this->gyro_y>6.28){this->gyro_y-=12.56;}

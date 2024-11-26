@@ -10,8 +10,6 @@ written by Ztirom45
 
 #include <motors.hpp>
 
-
-
 #include <HardwareSerial.h>
 #include <Arduino.h>
 #include <Adafruit_ADXL345_U.h>
@@ -74,15 +72,13 @@ String read_message(){
 
 float x_rot = 0;
 void loop(){ 
-  unsigned long start = micros();
   Encoder_1.loop();
   Encoder_2.loop();
-  gyro.update();
 
-  parse_and_execute_action(read_message());
-  
-  Serial.print("micros: ");
-  Serial.println(micros() - start);
+  gyro.update(); 
+  parse_and_execute_action(read_message()); 
+
+  //Serial.println(micros() - start);
   //debuging stuff
   /*if(Serial3.available()>0){
       Serial.print((char)Serial3.read());
