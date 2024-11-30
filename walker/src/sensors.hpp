@@ -17,6 +17,12 @@ double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor);
 #define read_ultrasonic1() ultrasonic_cm(28,30,0.034 / 2.0)
 #define read_ultrasonic2() ultrasonic_cm(29,39,0.034 / 2.0)
 
+constexpr float n_decimals(float n,float pow_ten_decimals){
+	return (float)(
+		(int)(n*pow_ten_decimals)
+	)/pow_ten_decimals;
+}
+
 void init_sensors();
 
 #ifdef LEG_TRACKING_ENABLET
@@ -28,8 +34,15 @@ struct Gyro{
 	float gyro_x;
 	float gyro_y;
 	float gyro_z;
+	//the gyro never returns 0 while not moving
+	//therefore we need a value, whichs is offseted while getting the gyro data
+	float delta_gyro_x;
+	float delta_gyro_y;
+	float delta_gyro_z;
+
 	sensors_event_t a, g, temp;
 	Gyro();
+	void calibrate();
 	void init();
 	void update();
 };

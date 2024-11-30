@@ -177,7 +177,7 @@ void forward_gyro_setup(Vector<String> args,Command *command){
 
 }
 void forward_gyro_loop(Command *command){//TODO: debug gyro does not work output: 0.0
-      const float stiring = gyro.gyro_x*2; 
+      const float stiring = gyro.gyro_x*STEARING_FAKTOR; 
       Encoder_1.setTarPWM(command->speed+stiring);
       Encoder_2.setTarPWM(-command->speed+stiring);
       Serial.print(gyro.gyro_x);

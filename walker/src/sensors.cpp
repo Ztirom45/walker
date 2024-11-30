@@ -1,4 +1,5 @@
 
+#include "HardwareSerial.h"
 #include <sensors.hpp>
 
 
@@ -20,7 +21,8 @@ double ultrasonic_cm(int trig_pin,int echo_pin,double conversion_factor){
   return (double)pulseIn(echo_pin,HIGH) *conversion_factor;
 }
 
-Gyro::Gyro() : gyro_x(0),gyro_y(0),gyro_z(0){};
+Gyro::Gyro() : gyro_x(0),gyro_y(0),gyro_z(0),delta_gyro_x(0),delta_gyro_y(0),delta_gyro_z(0){};
+
 void Gyro::init(){
 
       if (!mpu.begin()) {
@@ -32,24 +34,44 @@ void Gyro::init(){
       //disable unnnesery features of sensor, beacuse of performance
       mpu.setTemperatureStandby(true);
       mpu.setAccelerometerStandby(true, true, true);
+      
+      this->calibrate();
+}
 
+void Gyro::calibrate(){
+  for(int i=0;i<100;i++){
+    this->mpu.getEvent(&this->a, &this->g, &this->temp);
+    this->delta_gyro_x += g.gyro.x;
+    this->delta_gyro_y += g.gyro.y;
+    this->delta_gyro_z += g.gyro.z;
+  }
+  this->delta_gyro_x /= 100;
+  this->delta_gyro_y /= 100;
+  this->delta_gyro_z /= 100;
+  Serial.print("gyro calibration: gxa=");
+  Serial.print(this->delta_gyro_z,7);
+  Serial.print(", gya=");
+  Serial.print(this->delta_gyro_y,7);
+  Serial.print(", gza=");
+  Serial.print(this->delta_gyro_z,7);
 }
 
 void Gyro::update(){
   //try None
   this->mpu.getEvent(&this->a, &this->g, &this->temp);
   
-  this->gyro_x += this->g.gyro.x+0.205;
+  this->gyro_x += n_decimals(this->g.gyro.x-this->delta_gyro_x,10);
+  Serial.println(this->g.gyro.x);
   //if(this->gyro_x>6.28){this->gyro_x-=12.56;}
   //if(this->gyro_x<-6.28){this->gyro_x+=12.56;}
   
-  this->gyro_y += this->g.gyro.y-0.02;
-  if(this->gyro_y>6.28){this->gyro_y-=12.56;}
-  if(this->gyro_y<-6.28){this->gyro_y+=12.56;} 
+  this->gyro_y += n_decimals(this->g.gyro.y-this->delta_gyro_y,10);
+  //if(this->gyro_y>6.28){this->gyro_y-=12.56;}
+//if(this->gyro_y<-6.28){this->gyro_y+=12.56;} 
   
-  this->gyro_z += this->g.gyro.z+0.05;
-  if(this->gyro_z>6.28){this->gyro_z-=12.56;}
-  if(this->gyro_z<-6.28){this->gyro_z+=12.56;}
+  this->gyro_z += n_decimals(this->g.gyro.z-this->delta_gyro_z,10);
+  //if(this->gyro_z>6.28){this->gyro_z-=12.56;}
+  //if(this->gyro_z<-6.28){this->gyro_z+=12.56;}
 }
 
 void init_sensors(){

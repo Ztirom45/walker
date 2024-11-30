@@ -46,7 +46,7 @@ void motor_left_loop(Command *command);
 void turn_setup(Vector<String> args,Command *command);
 void turn_loop(Command *command);
 
-#define STEARING_FAKTOR 1
+#define STEARING_FAKTOR 2
 void follow_wall_setup(Vector<String> args,Command *command);
 void follow_wall_loop(Command *command);
 
