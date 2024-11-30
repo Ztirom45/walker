@@ -57,11 +57,9 @@ void Gyro::calibrate(){
 }
 
 void Gyro::update(){
-  //try None
   this->mpu.getEvent(&this->a, &this->g, &this->temp);
   
   this->gyro_x += n_decimals(this->g.gyro.x-this->delta_gyro_x,10);
-  Serial.println(this->g.gyro.x);
   //if(this->gyro_x>6.28){this->gyro_x-=12.56;}
   //if(this->gyro_x<-6.28){this->gyro_x+=12.56;}
   
