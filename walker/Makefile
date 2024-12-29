@@ -12,3 +12,6 @@ monitor:
 lsp:
 	#create compile_commands with:
 	pio run -t compiledb
+
+debug:
+	pio debug --interface=gdb -b 115200 -x 'target remote /dev/ttyUSB0'

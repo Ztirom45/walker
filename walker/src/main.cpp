@@ -7,16 +7,18 @@ LICENCE: GPL4
 written by Ztirom45
 */
 
-
+/*
 #include <motors.hpp>
 
-#include <HardwareSerial.h>
 #include <Arduino.h>
+#include <log.hpp>
+
 #include <Adafruit_ADXL345_U.h>
 #include <Vector.h>
 
 #include <commands.hpp>
 #include <sensors.hpp>
+
 
 void wait_for_wifi_connection(){
   char recived = '7';
@@ -25,37 +27,38 @@ void wait_for_wifi_connection(){
     loop = false;
     for(int i=0;i<30;i++){
       recived = Serial3.read();
-      Serial.println(recived);
+      mylog(recived);
       if (recived=='7'||recived=='4'){
 	loop = true;
       }
       delay(100);
     }
   }
-  Serial.println("connected to WiFi");
+  mylog("connected to WiFi");
 }
 String recived;
 void setup(){	
-	Serial.begin(9600);
-	Serial.println("Start");
+	//Serial.begin(9600);	
+	debug_init();
+	mylog("Start");
 	//setup motors
-	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
-	attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
+	//attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
+	//attachInterrupt(Encoder_1.getIntNum(), isr_process_encoder1, RISING);
 	//setup for encoder, does not work anyways
 	//use with: runSpeed
 	init_encoder();
 	init_sensors();
 	
 	//setup wifimod
-	Serial3.begin(115200);
-	wait_for_wifi_connection();
+	//Serial3.begin(115200);
+	//wait_for_wifi_connection();
 	
 	//setup commands	
 	recived.reserve(MAX_COMMAND_LEN);
+	parse_and_execute_action("forward_gyro 70");//debug rm later
 }
 
 
-//do not write "data:" as topic or "/////" as message or topic
 String read_message(){
 	if(Serial3.available()<=0){
 
@@ -72,16 +75,25 @@ String read_message(){
 
 float x_rot = 0;
 void loop(){ 
+  mylog("encoder");
   Encoder_1.loop();
   Encoder_2.loop();
+  
 
-  gyro.update(); 
-  parse_and_execute_action(read_message()); 
+  mylog("gyro");
+  gyro.update();
 
-  //Serial.println(micros() - start);
+  mylog("parse");
+  parse_and_execute_action("");//read_message()); 
+
+  //mylog(micros() - start);
   //debuging stuff
   /*if(Serial3.available()>0){
       Serial.print((char)Serial3.read());
   }*/
-	
-}
+/*	
+}*/
+#include <Arduino.h>
+void setup(){}
+void loop(){}
+

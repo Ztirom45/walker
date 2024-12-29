@@ -1,5 +1,3 @@
-
-#include "HardwareSerial.h"
 #include <sensors.hpp>
 
 
@@ -26,7 +24,7 @@ Gyro::Gyro() : gyro_x(0),gyro_y(0),gyro_z(0),delta_gyro_x(0),delta_gyro_y(0),del
 void Gyro::init(){
 
       if (!mpu.begin()) {
-	Serial.println("Failed to find MPU6050 chip");
+	mylog("Failed to find MPU6050 chip");
       }
       mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
       mpu.setGyroRange(MPU6050_RANGE_500_DEG);
@@ -48,25 +46,28 @@ void Gyro::calibrate(){
   this->delta_gyro_x /= 100;
   this->delta_gyro_y /= 100;
   this->delta_gyro_z /= 100;
-  Serial.print("gyro calibration: gxa=");
-  Serial.print(this->delta_gyro_z,7);
-  Serial.print(", gya=");
-  Serial.print(this->delta_gyro_y,7);
-  Serial.print(", gza=");
-  Serial.print(this->delta_gyro_z,7);
+  mylog("gyro calibration: gxa=");
+  mylog(this->delta_gyro_z);
+  mylog(", gya=");
+  mylog(this->delta_gyro_y);
+  mylog(", gza=");
+  mylog(this->delta_gyro_z);
 }
-
 void Gyro::update(){
+  mylog("get Event");
   this->mpu.getEvent(&this->a, &this->g, &this->temp);
   
+  mylog("x");
   this->gyro_x += n_decimals(this->g.gyro.x-this->delta_gyro_x,10);
   //if(this->gyro_x>6.28){this->gyro_x-=12.56;}
   //if(this->gyro_x<-6.28){this->gyro_x+=12.56;}
   
+  mylog("y");
   this->gyro_y += n_decimals(this->g.gyro.y-this->delta_gyro_y,10);
   //if(this->gyro_y>6.28){this->gyro_y-=12.56;}
 //if(this->gyro_y<-6.28){this->gyro_y+=12.56;} 
   
+  mylog("z");
   this->gyro_z += n_decimals(this->g.gyro.z-this->delta_gyro_z,10);
   //if(this->gyro_z>6.28){this->gyro_z-=12.56;}
   //if(this->gyro_z<-6.28){this->gyro_z+=12.56;}
@@ -77,11 +78,11 @@ void init_sensors(){
 	#ifdef LEG_TRACKING_ENABLET
 	if(!acc.begin(0x53))
 	{
-	  Serial.println("no ADXL345 on 53d detected ... Check your wiring!");
+	  mylog("no ADXL345 on 53d detected ... Check your wiring!");
 	}
 	if(!acc2.begin(0x1d))
 	{
-	  Serial.println("no ADXL345 on 0x1d detected ... Check your wiring!");
+	  mylog("no ADXL345 on 0x1d detected ... Check your wiring!");
 	}
 	acc.setRange(ADXL345_RANGE_16_G);
 	acc2.setRange(ADXL345_RANGE_16_G);

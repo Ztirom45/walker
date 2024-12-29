@@ -7,6 +7,7 @@ TODO smartpointer
 
 
 #include <Arduino.h>
+#include <log.hpp>
 #include <Adafruit_ADXL345_U.h>
 #include <Vector.h>
 #include <motors.hpp>

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <HardwareSerial.h>
 #include <Arduino.h>
+#include <log.hpp>
 #include <Adafruit_ADXL345_U.h>
 #include <Vector.h>
 #include <Adafruit_MPU6050.h>
