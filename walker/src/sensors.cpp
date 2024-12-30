@@ -54,20 +54,16 @@ void Gyro::calibrate(){
   mylog(this->delta_gyro_z);
 }
 void Gyro::update(){
-  mylog("get Event");
   this->mpu.getEvent(&this->a, &this->g, &this->temp);
   
-  mylog("x");
   this->gyro_x += n_decimals(this->g.gyro.x-this->delta_gyro_x,10);
   //if(this->gyro_x>6.28){this->gyro_x-=12.56;}
   //if(this->gyro_x<-6.28){this->gyro_x+=12.56;}
   
-  mylog("y");
   this->gyro_y += n_decimals(this->g.gyro.y-this->delta_gyro_y,10);
   //if(this->gyro_y>6.28){this->gyro_y-=12.56;}
 //if(this->gyro_y<-6.28){this->gyro_y+=12.56;} 
   
-  mylog("z");
   this->gyro_z += n_decimals(this->g.gyro.z-this->delta_gyro_z,10);
   //if(this->gyro_z>6.28){this->gyro_z-=12.56;}
   //if(this->gyro_z<-6.28){this->gyro_z+=12.56;}

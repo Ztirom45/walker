@@ -7,7 +7,7 @@ LICENCE: GPL4
 written by Ztirom45
 */
 
-/*
+
 #include <motors.hpp>
 
 #include <Arduino.h>
@@ -50,12 +50,11 @@ void setup(){
 	init_sensors();
 	
 	//setup wifimod
-	//Serial3.begin(115200);
-	//wait_for_wifi_connection();
+	Serial3.begin(115200);
+	wait_for_wifi_connection();
 	
 	//setup commands	
 	recived.reserve(MAX_COMMAND_LEN);
-	parse_and_execute_action("forward_gyro 70");//debug rm later
 }
 
 
@@ -75,25 +74,18 @@ String read_message(){
 
 float x_rot = 0;
 void loop(){ 
-  mylog("encoder");
   Encoder_1.loop();
   Encoder_2.loop();
   
 
-  mylog("gyro");
   gyro.update();
 
-  mylog("parse");
-  parse_and_execute_action("");//read_message()); 
+  parse_and_execute_action(read_message()); 
 
   //mylog(micros() - start);
   //debuging stuff
   /*if(Serial3.available()>0){
       Serial.print((char)Serial3.read());
   }*/
-/*	
-}*/
-#include <Arduino.h>
-void setup(){}
-void loop(){}
-
+	
+}
