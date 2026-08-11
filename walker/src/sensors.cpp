@@ -28,6 +28,7 @@ void Gyro::init(){
       }
       mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
       mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+      //Filter for low value gyro movement
       mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
       //disable unnnesery features of sensor, beacuse of performance
       mpu.setTemperatureStandby(true);
@@ -54,6 +55,7 @@ void Gyro::calibrate(){
   mylog(this->delta_gyro_z);
 }
 void Gyro::update(){
+  
   this->mpu.getEvent(&this->a, &this->g, &this->temp);
   
   this->gyro_x += n_decimals(this->g.gyro.x-this->delta_gyro_x,10);
@@ -63,10 +65,10 @@ void Gyro::update(){
   this->gyro_y += n_decimals(this->g.gyro.y-this->delta_gyro_y,10);
   //if(this->gyro_y>6.28){this->gyro_y-=12.56;}
 //if(this->gyro_y<-6.28){this->gyro_y+=12.56;} 
-  
   this->gyro_z += n_decimals(this->g.gyro.z-this->delta_gyro_z,10);
   //if(this->gyro_z>6.28){this->gyro_z-=12.56;}
   //if(this->gyro_z<-6.28){this->gyro_z+=12.56;}
+  mylog((float)g.gyro.x);
 }
 
 void init_sensors(){

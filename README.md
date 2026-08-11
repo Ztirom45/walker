@@ -16,29 +16,29 @@ mv wifimod/src/password_example.h wifimod/src/password.h
 ```
 - fill all constants with your wifi and server setup
 
-### the walker is made out of 2 peaces
+### the walker is made out of 2 pieces
 - the motor and sensor controll unit (A makeblock megapi, 📂[walker](./walker))
 - a mqtt unit (a esp d1mini, 📂[wifimod](./wifimod))
 
-### boath modules comunicate via uart 
+### both modules communicate via uart 
 - d1mini: Serial
 - megapi:Serial3
 
-### a protocol is used to transfare mqtt messages 🖥️⟶ 🖥️
+### a protocol is used to transfer mqtt messages 🖥️⟶ 🖥️
 - a message looks like this:
 ```
 -m<message>-e
 ```
-- the arduino looks for `"-m"` to reconize a new message
+- the arduino looks for `"-m"` to recognize a new message
 - it reads the data in between of the `message[2]` and `"-e"`
 - **IMPORTANT:** do not use a `"-"` inside a message
 - **IMPORTANT:** the `<message>` part can't longer than `MAX_COMMAND_LEN` (50 chars)
 
 ### the walker uses a protocol to move via mqtt (Work in Progress) 🖥️⟶ 🖥️:
-- a command followed by parameters separeatet with a space and ends with a \n
+- a command followed by parameters separeated with a space and ends with a \n
 - example: forward 10
 
-### comand list (Work in Progress)⌨️
+### command list (Work in Progress)⌨️
 - [X] forward(speed) ⥣
 - [X] left_motor(speed) [⟲ X]
 - [X] right_motor(speed) [X ⟲]
@@ -51,7 +51,7 @@ mv wifimod/src/password_example.h wifimod/src/password.h
 
 ### TODO:
 - [X] Gyro
-- [ ] controller app
+- [X] controller app
 - [ ] maybe camera
 - [X] fix motor acceleration problem
 - [X] real support for commands which are looped (like follow_wall)
